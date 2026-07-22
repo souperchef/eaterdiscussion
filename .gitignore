@@ -1,0 +1,25 @@
+# Dependency directories
+node_modules/
+jspm_packages/
+
+# Build outputs and logs
+dist/
+build/
+*.log
+logs
+*.log*
+
+# Local environment and secret files
+.env
+.env.local
+.env.*.local
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDEs and text editors
+.vscode/
+.idea/
+*.suo
+*.ntvs*
