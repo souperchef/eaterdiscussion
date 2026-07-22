@@ -1,29 +1,5 @@
-// Default list of discussion prompts categorized by topic
-const prompts = [
-  // Icebreakers
-  { category: "icebreaker", text: "What is your absolute favorite way to spend a rainy Sunday?" },
-  { category: "icebreaker", text: "If you could instantly become an expert in one skill, what would it be?" },
-  { category: "icebreaker", text: "What was your very first concert or movie in a theater?" },
-  { category: "icebreaker", text: "What is a food combination that sounds weird but tastes amazing?" },
-
-  // Deep & Reflective
-  { category: "deep", text: "What is a piece of advice you received years ago that still guides you today?" },
-  { category: "deep", text: "How has your definition of success changed over the last 5 years?" },
-  { category: "deep", text: "What is something you used to strongly believe, but changed your mind about?" },
-  { category: "deep", text: "What hobby or activity makes you completely lose track of time?" },
-
-  // Work & Teamwork
-  { category: "work", text: "What small habit or tool has made the biggest impact on your daily productivity?" },
-  { category: "work", text: "What is one thing our team does really well, and one area where we can improve?" },
-  { category: "work", text: "How do you prefer to recharge during a busy workday?" },
-  { category: "work", text: "What is the most useful piece of constructive feedback you've ever received?" },
-
-  // Fun & Random
-  { category: "fun", text: "If you were forced to live in a fictional movie universe, which one would you pick?" },
-  { category: "fun", text: "What would the title of your autobiography be?" },
-  { category: "fun", text: "If animals could talk, which species would be the rudest?" },
-  { category: "fun", text: "You get a free billboard in the middle of Times Square. What do you put on it?" }
-];
+// Paste your Google Apps Script Web App URL inside the quotes below:
+const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycby9t2SRZLhH4CiMckUJailyFtyj29lYxXs4btt1EhMab1-FpT8krpKTFEtNos0CpLE/exec";
 
 // Reference DOM elements
 const categorySelect = document.getElementById("category-select");
@@ -31,34 +7,38 @@ const promptText = document.getElementById("prompt-text");
 const generateBtn = document.getElementById("generate-btn");
 const copyBtn = document.getElementById("copy-btn");
 
-let lastIndex = -1;
-
-// Function to generate a random discussion topic based on category selection
-function getRandomPrompt() {
+// Function to call the Apps Script backend and receive an AI-generated question
+async function getRandomPrompt() {
   const selectedCategory = categorySelect.value;
 
-  const filteredPrompts = selectedCategory === "all" 
-    ? prompts 
-    : prompts.filter(p => p.category === selectedCategory);
+  // Set loading state in UI
+  generateBtn.disabled = true;
+  generateBtn.textContent = "✨ Thinking...";
+  promptText.textContent = "Generating a unique question with AI...";
 
-  if (filteredPrompts.length === 0) {
-    promptText.textContent = "No prompts found for this category!";
-    return;
+  try {
+    const response = await fetch(`${APPS_SCRIPT_URL}?category=${encodeURIComponent(selectedCategory)}`);
+    const data = await response.json();
+
+    if (data.status === "success" && data.prompt) {
+      promptText.textContent = data.prompt;
+    } else {
+      promptText.textContent = "Oops! Could not generate a question. Please try again.";
+    }
+  } catch (error) {
+    console.error("Error fetching prompt:", error);
+    promptText.textContent = "Connection error. Make sure your Apps Script URL is updated in script.js!";
+  } finally {
+    // Reset button state
+    generateBtn.disabled = false;
+    generateBtn.textContent = "🎲 Generate Prompt";
   }
-
-  let randomIndex;
-  do {
-    randomIndex = Math.floor(Math.random() * filteredPrompts.length);
-  } while (filteredPrompts.length > 1 && randomIndex === lastIndex);
-
-  lastIndex = randomIndex;
-  promptText.textContent = filteredPrompts[randomIndex].text;
 }
 
-// Function to copy the text prompt to clipboard
+// Function to copy text to clipboard
 async function copyToClipboard() {
   const textToCopy = promptText.textContent;
-  if (!textToCopy || textToCopy.includes("Click the button")) return;
+  if (!textToCopy || textToCopy.includes("Click the button") || textToCopy.includes("Generating")) return;
 
   try {
     await navigator.clipboard.writeText(textToCopy);
