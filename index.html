@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Discussion Generator</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>💬 Discussion Generator</h1>
+      <p>Spark great conversations for meetings, team huddles, or friends!</p>
+    </header>
+
+    <main class="card">
+      <div class="controls">
+        <label for="category-select">Choose Category:</label>
+        <select id="category-select">
+          <option value="all">✨ Any Topic</option>
+          <option value="icebreaker">🧊 Icebreakers</option>
+          <option value="deep">🌊 Deep & Reflective</option>
+          <option value="work">💼 Work & Teamwork</option>
+          <option value="fun">🎉 Fun & Random</option>
+        </select>
+      </div>
+
+      <div class="prompt-box">
+        <p id="prompt-text">Click the button below to generate a discussion topic!</p>
+      </div>
+
+      <div class="action-buttons">
+        <button id="generate-btn" class="btn primary">🎲 Generate Prompt</button>
+        <button id="copy-btn" class="btn secondary">📋 Copy Question</button>
+      </div>
+    </main>
+
+    <footer>
+      <p>Hosted on GitHub Pages</p>
+    </footer>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
