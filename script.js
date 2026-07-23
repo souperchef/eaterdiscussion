@@ -1,5 +1,5 @@
 // Replace the placeholder below with your full Google Apps Script Web App URL
-const APPS_SCRIPT_URL = "YOUR_APPS_SCRIPT_WEB_APP_URL_HERE";
+const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyFanYz-MZpvBRgfn3XxCln-hzV-_7llZau4jRoI_Ml0QWfwE-NgYSMZUeNanlpaCXz/exec";
 
 // Reference DOM elements
 const categorySelect = document.getElementById("category-select");
